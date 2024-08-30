@@ -17,7 +17,7 @@ const Home = () => {
       if (response.ok) {
         setSubmissionSuccess(true);
         // Optionally, reset the form after successful submission
-
+        // formik.resetForm(); doesn't work 
       } else {
         console.error("Error submitting data:", response.status);
       }

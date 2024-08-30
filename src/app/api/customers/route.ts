@@ -1,12 +1,13 @@
 import { Client } from "pg";
+import { sql } from '@vercel/postgres';
 
-const connectionString = "postgres://postgres:Test123!@localhost:5432/customer_db";
-const client = new Client({ connectionString });
+//const connectionString = "postgres://postgres:Test123!@localhost:5432/customer_db";
+//const client = new Client({ connectionString });
 
 
-client.connect()
-  .then(() => console.log('Connected to PostgreSQL database'))
-  .catch(err => console.error('Error connecting to PostgreSQL:', err));
+// client.connect()
+//   .then(() => console.log('Connected to PostgreSQL database'))
+//   .catch(err => console.error('Error connecting to PostgreSQL:', err));
 
 export async function GET(request: Request) {
   return new Response('Hello from the API!');
@@ -27,10 +28,12 @@ export async function POST(request: Request) {
       return new Response('Invalid mobile phone number', { status: 400 });
     }
 
-    const insertResult = await client.query(
-      'INSERT INTO customers (full_name, address, mobile_phone) VALUES ($1, $2, $3)',
-      [data.full_name, data.address, data.mobile_phone]
-    );
+    // const insertResult = await client.query(
+    //   'INSERT INTO customers (full_name, address, mobile_phone) VALUES ($1, $2, $3)',
+    //   [data.full_name, data.address, data.mobile_phone]
+    // );
+
+    const insertResult = await sql`INSERT INTO customers (full_name, address, mobile_phone) VALUES (${data.full_name}, ${data.address}, ${data.mobile_phone})`;
 
     if (insertResult.rowCount === 1) {
       return new Response('Customer added successfully', { status: 201 });
